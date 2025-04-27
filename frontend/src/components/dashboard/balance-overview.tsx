@@ -1,0 +1,79 @@
+import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+
+export function BalanceOverview() {
+  // Mock data - would come from API in real implementation
+  const balance = 12450.75;
+  const income = 3200;
+  const expenses = 1850;
+  const savingsPercentage = 22;
+
+  return (
+    <Card className="bg-gradient-to-r from-primary/10 via-primary/5 to-background">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">Balance Overview</CardTitle>
+        <CardDescription>Your financial summary for April 2025</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-muted-foreground">
+              Total Balance
+            </h3>
+            <p className="text-3xl font-bold">
+              ${balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <h3 className="text-sm font-medium text-muted-foreground">
+                  Income
+                </h3>
+                <div className="flex items-center">
+                  <ArrowUpIcon className="mr-1 h-4 w-4 text-green-500" />
+                  <p className="text-xl font-semibold">
+                    ${income.toLocaleString("en-US")}
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <h3 className="text-sm font-medium text-muted-foreground">
+                  Expenses
+                </h3>
+                <div className="flex items-center">
+                  <ArrowDownIcon className="mr-1 h-4 w-4 text-red-500" />
+                  <p className="text-xl font-semibold">
+                    ${expenses.toLocaleString("en-US")}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-medium text-muted-foreground">
+                Savings Progress
+              </h3>
+              <span className="text-sm font-medium">{savingsPercentage}%</span>
+            </div>
+            <Progress value={savingsPercentage} className="h-2" />
+            <p className="text-sm text-muted-foreground">
+              You're on track to save {savingsPercentage}% this month!
+            </p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
