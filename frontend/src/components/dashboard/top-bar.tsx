@@ -1,6 +1,8 @@
 import { Bell, LogOut, Search, Settings, User } from "lucide-react";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,8 +12,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { ReactNode } from "react";
 import { ThemeToggle } from "../theme-toggle";
 
 export function TopBar() {
@@ -33,27 +35,29 @@ export function TopBar() {
               3
             </Badge>
           </Button>
-
-          <UserButton />
         </div>
       </div>
     </div>
   );
 }
 
-export function UserButton() {
+export function UserButton({ trigger }: { trigger?: ReactNode }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarImage
-              src="/placeholder.svg?height=32&width=32"
-              alt="@user"
-            />
-            <AvatarFallback>JD</AvatarFallback>
-          </Avatar>
-        </Button>
+        {trigger ? (
+          trigger
+        ) : (
+          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+            <Avatar className="h-8 w-8">
+              <AvatarImage
+                src="/placeholder.svg?height=32&width=32"
+                alt="@user"
+              />
+              <AvatarFallback>JD</AvatarFallback>
+            </Avatar>
+          </Button>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">

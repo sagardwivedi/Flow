@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreVertical } from "lucide-react";
+import type { ColumnDef } from "@tanstack/react-table";
+import { Eye, MoreVertical, Pencil, Trash2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,15 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn, formatCurrency, formatDate, getCategoryColor } from "@/lib/utils";
 import { DataTableColumnHeader } from "./data-table-column-header";
 
@@ -31,7 +38,25 @@ export const columns: ColumnDef<Transactions>[] = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("date") as Date;
-      return <div className="font-medium">{formatDate(date)}</div>;
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="font-medium">{formatDate(date)}</div>
+            </TooltipTrigger>
+            <TooltipContent>
+              {new Date(date).toLocaleString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
     },
   },
   {
@@ -39,9 +64,17 @@ export const columns: ColumnDef<Transactions>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Merchant" />
     ),
-    cell: ({ row }) => (
-      <div className="truncate">{row.getValue("merchant")}</div>
-    ),
+    cell: ({ row }) => {
+      const merchant = row.getValue("merchant") as string;
+      return (
+        <div className="flex items-center">
+          <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center mr-2 text-xs font-medium">
+            {merchant.charAt(0).toUpperCase()}
+          </div>
+          <div className="font-medium">{merchant}</div>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "category",
@@ -52,10 +85,15 @@ export const columns: ColumnDef<Transactions>[] = [
       const category = row.getValue("category") as string;
       return <Badge className={getCategoryColor(category)}>{category}</Badge>;
     },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
     accessorKey: "account",
-    header: "Account",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Account" />
+    ),
     cell: ({ row }) => <div>{row.getValue("account")}</div>,
   },
   {
@@ -79,8 +117,8 @@ export const columns: ColumnDef<Transactions>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      const transaction = row.original;
+    cell: () => {
+      // const transaction = row.original
 
       return (
         <DropdownMenu>
@@ -90,10 +128,20 @@ export const columns: ColumnDef<Transactions>[] = [
               <MoreVertical className="size-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>View Details</DropdownMenuItem>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
+          <DropdownMenuContent align="end" className="w-[160px]">
+            <DropdownMenuItem>
+              <Eye className="mr-2 h-4 w-4" />
+              View Details
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Pencil className="mr-2 h-4 w-4" />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="text-red-500">
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

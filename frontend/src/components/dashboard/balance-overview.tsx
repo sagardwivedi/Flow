@@ -69,7 +69,7 @@ export function BalanceOverview() {
             </div>
             <Progress value={savingsPercentage} className="h-2" />
             <p className="text-sm text-muted-foreground">
-              You're on track to save {savingsPercentage}% this month!
+              You&apos;re on track to save {savingsPercentage}% this month!
             </p>
           </div>
         </div>

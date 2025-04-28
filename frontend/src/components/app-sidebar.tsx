@@ -3,6 +3,7 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuAction,
@@ -12,7 +13,7 @@ import {
 import {
   Tooltip,
   TooltipContent,
-  TooltipTrigger
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
   BarChartIcon,
@@ -24,6 +25,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { UserButton } from "./dashboard/top-bar";
 import { Separator } from "./ui/separator";
 
 export function AppSidebar() {
@@ -76,7 +78,9 @@ export function AppSidebar() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <SidebarMenuAction className="cursor-pointer" showOnHover>
-                        <PlusIcon className="size-4" />
+                        <Link href={{ query: { goalDialog: true } }}>
+                          <PlusIcon className="size-4" />
+                        </Link>
                       </SidebarMenuAction>
                     </TooltipTrigger>
                     <TooltipContent side="right">{actionLabel}</TooltipContent>
@@ -87,6 +91,9 @@ export function AppSidebar() {
           })}
         </SidebarMenu>
       </SidebarContent>
+      <SidebarFooter>
+        <UserButton />
+      </SidebarFooter>
     </Sidebar>
   );
 }

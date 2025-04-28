@@ -1,13 +1,13 @@
-import { Button } from "@/components/ui/button";
-
-import { Plus } from "lucide-react";
+import { TransactionOverview } from "@/components/transactions/transaction-overview";
+import { TransactionTopBar } from "@/components/transactions/transaction-top-bar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Suspense } from "react";
 import { columns, Transactions } from "./columns";
 import { DataTable } from "./data-table";
-import { TransactionTopBar } from "@/components/transactions/transaction-top-bar";
-import { TransactionOverview } from "@/components/transactions/transaction-overview";
-import { TransactionFilter } from "@/components/transactions/transaction-filter";
 
 async function getData(): Promise<Transactions[]> {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   return [
     {
       id: "1",
@@ -373,18 +373,42 @@ async function getData(): Promise<Transactions[]> {
   ];
 }
 
-export default async function TransactionsPage() {
-  const data = await getData();
+function TransactionSkeleton() {
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[1, 2, 3].map((i) => (
+          <Skeleton key={i} className="h-[120px] w-full" />
+        ))}
+      </div>
+      <Skeleton className="h-[350px] w-full" />
+      <Skeleton className="h-[400px] w-full" />
+    </div>
+  );
+}
 
+export default async function TransactionsPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <TransactionTopBar />
-      <div className="flex-1 p-4 md:p-6">
-        <TransactionOverview data={data} />
-        <div className="container mx-auto py-10">
-          <DataTable columns={columns} data={data} />
-        </div>
+      <div className="flex-1 p-4 md:p-6 space-y-6">
+        <Suspense fallback={<TransactionSkeleton />}>
+          <TransactionsContent />
+        </Suspense>
       </div>
     </div>
+  );
+}
+
+async function TransactionsContent() {
+  const data = await getData();
+
+  return (
+    <>
+      <TransactionOverview data={data} />
+      <div className="rounded-lg shadow-sm p-4 md:p-6">
+        <DataTable columns={columns} data={data} />
+      </div>
+    </>
   );
 }
