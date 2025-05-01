@@ -1,7 +1,6 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { GoalCreateDialog } from "@/components/goals/goal-create-dialog";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { Toaster } from "@/components/ui/sonner";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Suspense } from "react";
 

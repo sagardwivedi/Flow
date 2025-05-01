@@ -1,0 +1,13 @@
+<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Light mode grid -->
+    <pattern id="grid-light" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(156, 163, 175, 0.1)" stroke-width="1"/>
+    </pattern>
+    
+    <!-- Dark mode grid (will be selected via CSS) -->
+    <pattern id="grid-dark" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(75, 85, 99, 0.2)" stroke-width="1"/>
+    </pattern>
+  </defs>
+</svg>
