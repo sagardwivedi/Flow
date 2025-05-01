@@ -1,66 +1,107 @@
 "use client";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { cn } from "@/lib/utils";
+import {
+  AnimatePresence,
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+} from "motion/react";
+import {
+  ArrowRight,
+  Bell,
+  Brain,
+  Goal,
+  PieChart,
+  Shield,
+  Sparkles,
+  Zap,
+} from "lucide-react";
+import { useState } from "react";
 import { Card } from "../ui/card";
-import { PieChart, Goal, Bell, Brain, Shield, Zap, ArrowRight } from "lucide-react";
 
 const features = [
   {
-    icon: <PieChart className="w-6 h-6" />,
+    icon: <PieChart className="size-5" />,
     title: "Smart Analytics",
-    desc: "Real-time spending breakdowns with predictive budgeting"
+    desc: "Real-time spending breakdowns with predictive budgeting",
+    highlight: "AI-powered insights",
   },
   {
-    icon: <Goal className="w-6 h-6" />,
+    icon: <Goal className="size-5" />,
     title: "Goal Tracking",
-    desc: "Visualize progress toward financial milestones"
+    desc: "Visualize progress toward financial milestones",
+    highlight: "Custom targets",
   },
   {
-    icon: <Bell className="w-6 h-6" />,
+    icon: <Bell className="size-5" />,
     title: "Bill Reminders",
-    desc: "Never miss a payment with smart notifications"
+    desc: "Never miss a payment with smart notifications",
+    highlight: "Auto-alerts",
   },
   {
-    icon: <Brain className="w-6 h-6" />,
+    icon: <Brain className="size-5" />,
     title: "AI Advisor",
-    desc: "Personalized recommendations to optimize finances"
+    desc: "Personalized recommendations to optimize finances",
+    highlight: "24/7 assistance",
   },
   {
-    icon: <Shield className="w-6 h-6" />,
+    icon: <Shield className="size-5" />,
     title: "Bank Security",
-    desc: "256-bit encryption and biometric protection"
+    desc: "256-bit encryption and biometric protection",
+    highlight: "Military-grade",
   },
   {
-    icon: <Zap className="w-6 h-6" />,
+    icon: <Zap className="size-5" />,
     title: "Instant Sync",
-    desc: "Connect all accounts in under 2 minutes"
-  }
+    desc: "Connect all accounts in under 2 minutes",
+    highlight: "Real-time",
+  },
 ];
 
 export function Features() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   return (
-    <section className="py-24 bg-gradient-to-b from-background to-muted/5">
+    <section className="relative py-28 overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute left-1/4 top-0 w-[800px] h-[800px] bg-primary/10 rounded-full blur-3xl opacity-10" />
+        <div className="absolute right-1/4 bottom-0 w-[800px] h-[800px] bg-secondary/10 rounded-full blur-3xl opacity-10" />
+      </div>
+
       <div className="container px-4 mx-auto w-full sm:px-6 lg:px-8 max-w-[85rem]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-20"
         >
-          <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-primary uppercase rounded-full bg-primary/10 mb-4">
-            Powerful Features
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Financial Superpowers for <span className="text-primary">Everyone</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">
+              Powerful Features
+            </span>
+          </div>
+
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 mb-4">
+            Financial Superpowers
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Everything you need to take control of your money in one beautiful dashboard
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Everything you need to master your finances in one intuitive
+            platform
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, i) => (
-            <FeatureCard key={i} {...feature} index={i} />
+          {features.map((feature, index) => (
+            <FeatureCard
+              key={index}
+              index={index}
+              {...feature}
+              hoveredIndex={hoveredIndex}
+              setHoveredIndex={setHoveredIndex}
+            />
           ))}
         </div>
       </div>
@@ -68,26 +109,52 @@ export function Features() {
   );
 }
 
-function FeatureCard({ icon, title, desc, index }: { icon: React.ReactNode, title: string, desc: string, index: number }) {
+function FeatureCard({
+  icon,
+  title,
+  desc,
+  highlight,
+  index,
+  hoveredIndex,
+  setHoveredIndex,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  desc: string;
+  highlight?: string;
+  index: number;
+  hoveredIndex: number | null;
+  setHoveredIndex: (index: number | null) => void;
+}) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
+      transition={{ delay: index * 0.1, duration: 0.6 }}
       viewport={{ once: true }}
+      onMouseEnter={() => setHoveredIndex(index)}
+      onMouseLeave={() => setHoveredIndex(null)}
       onMouseMove={(e) => {
         const { left, top } = e.currentTarget.getBoundingClientRect();
         mouseX.set(e.clientX - left);
         mouseY.set(e.clientY - top);
       }}
-      className="relative group"
+      className="relative h-full"
     >
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      
-      <Card className="relative h-full p-8 overflow-hidden border-transparent group-hover:border-primary/20 transition-colors bg-gradient-to-b from-gray-50/50 to-gray-100/30 dark:from-gray-900/50 dark:to-gray-800/30">
+      {/* Animated background overlay */}
+      <motion.div
+        className={cn(
+          "absolute inset-0 rounded-xl bg-gradient-to-br from-primary/10 to-transparent opacity-0",
+          hoveredIndex === index ? "opacity-100" : "group-hover:opacity-50"
+        )}
+        transition={{ duration: 0.3 }}
+      />
+
+      <Card className="relative h-full p-8 overflow-hidden bg-white dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-all">
+        {/* Light effect */}
         <motion.div
           className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity"
           style={{
@@ -100,20 +167,48 @@ function FeatureCard({ icon, title, desc, index }: { icon: React.ReactNode, titl
             `,
           }}
         />
-        
-        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-6 text-primary">
-          {icon}
-        </div>
-        
-        <h3 className="text-xl font-semibold tracking-tight mb-2">{title}</h3>
-        <p className="text-muted-foreground leading-relaxed">{desc}</p>
-        
-        <motion.div 
-          whileHover={{ x: 4 }}
-          className="mt-6 inline-flex items-center text-sm font-medium text-primary"
+
+        {/* Icon with animated background */}
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-6 text-primary relative"
         >
-          Learn more
-          <ArrowRight className="ml-1 w-4 h-4" />
+          {icon}
+          <AnimatePresence>
+            {hoveredIndex === index && (
+              <motion.span
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                className="absolute inset-0 rounded-full border-2 border-primary/30 pointer-events-none"
+              />
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Highlight badge */}
+        {highlight && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="absolute top-4 right-4"
+          >
+            <div className="px-2.5 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
+              {highlight}
+            </div>
+          </motion.div>
+        )}
+
+        <h3 className="text-xl font-semibold tracking-tight mb-3">{title}</h3>
+        <p className="text-muted-foreground leading-relaxed mb-6">{desc}</p>
+
+        <motion.div
+          whileHover={{ x: 4 }}
+          className="inline-flex items-center text-sm font-medium text-primary group"
+        >
+          <span>Learn more</span>
+          <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
         </motion.div>
       </Card>
     </motion.div>

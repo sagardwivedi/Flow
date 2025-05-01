@@ -3,6 +3,7 @@ import { Features } from "@/components/landing/Features";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { Header } from "@/components/landing/Header";
 import { createClient } from "@/lib/server";
+import { Footer } from "@/components/landing/Footer";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -12,16 +13,15 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header isLogged={user != null} />
+      <Header isLoggedIn={user != null} />
 
       <main className="flex-1">
         <Hero />
         <Features />
         <Testimonials />
-        {/* <CTA /> */}
       </main>
 
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
