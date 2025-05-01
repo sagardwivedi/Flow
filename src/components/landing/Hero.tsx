@@ -164,7 +164,7 @@ export function Hero() {
                       "w-full rounded-t-sm",
                       i % 2 === 0
                         ? "bg-gradient-to-t from-primary to-emerald-400"
-                        : "bg-gradient-to-t from-secondary to-purple-400"
+                        : "bg-gradient-to-t from-secondary to-purple-400",
                     )}
                   />
                 ))}

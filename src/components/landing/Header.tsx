@@ -24,7 +24,7 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
         "fixed w-full top-0 z-50 transition-all duration-300",
         scrolled
           ? "bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm"
-          : "bg-transparent border-transparent"
+          : "bg-transparent border-transparent",
       )}
     >
       <div className="mx-auto px-4 w-full sm:px-6 lg:px-8 max-w-[85rem]">

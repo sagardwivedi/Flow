@@ -148,7 +148,7 @@ function FeatureCard({
       <motion.div
         className={cn(
           "absolute inset-0 rounded-xl bg-gradient-to-br from-primary/10 to-transparent opacity-0",
-          hoveredIndex === index ? "opacity-100" : "group-hover:opacity-50"
+          hoveredIndex === index ? "opacity-100" : "group-hover:opacity-50",
         )}
         transition={{ duration: 0.3 }}
       />
