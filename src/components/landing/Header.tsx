@@ -1,10 +1,11 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { WalletIcon } from "lucide-react";
 import { motion } from "motion/react";
-import { Wallet } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
+import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 
 export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
@@ -24,7 +25,7 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
         "fixed w-full top-0 z-50 transition-all duration-300",
         scrolled
           ? "bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm"
-          : "bg-transparent border-transparent",
+          : "bg-transparent border-transparent"
       )}
     >
       <div className="mx-auto px-4 w-full sm:px-6 lg:px-8 max-w-[85rem]">
@@ -40,7 +41,7 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
               className="flex items-center gap-2 group"
               aria-label="Home"
             >
-              <Wallet className="h-6 w-6 text-primary group-hover:rotate-[-15deg] transition-transform" />
+              <WalletIcon className="size-6 text-primary group-hover:rotate-[-15deg] transition-transform" />
               <span className="text-xl font-bold tracking-tighter">
                 Fin<span className="text-primary">Dash</span>
               </span>

@@ -1,57 +1,59 @@
 "use client";
-import { cn } from "@/lib/utils";
+
+import {
+  ArrowRightIcon,
+  BellIcon,
+  BrainIcon,
+  GoalIcon,
+  PieChartIcon,
+  ShieldIcon,
+  SparklesIcon,
+  ZapIcon,
+} from "lucide-react";
 import {
   AnimatePresence,
   motion,
   useMotionTemplate,
   useMotionValue,
 } from "motion/react";
-import {
-  ArrowRight,
-  Bell,
-  Brain,
-  Goal,
-  PieChart,
-  Shield,
-  Sparkles,
-  Zap,
-} from "lucide-react";
 import { useState } from "react";
+
+import { cn } from "@/lib/utils";
 import { Card } from "../ui/card";
 
 const features = [
   {
-    icon: <PieChart className="size-5" />,
+    icon: <PieChartIcon className="size-5" />,
     title: "Smart Analytics",
     desc: "Real-time spending breakdowns with predictive budgeting",
     highlight: "AI-powered insights",
   },
   {
-    icon: <Goal className="size-5" />,
+    icon: <GoalIcon className="size-5" />,
     title: "Goal Tracking",
     desc: "Visualize progress toward financial milestones",
     highlight: "Custom targets",
   },
   {
-    icon: <Bell className="size-5" />,
+    icon: <BellIcon className="size-5" />,
     title: "Bill Reminders",
     desc: "Never miss a payment with smart notifications",
     highlight: "Auto-alerts",
   },
   {
-    icon: <Brain className="size-5" />,
+    icon: <BrainIcon className="size-5" />,
     title: "AI Advisor",
     desc: "Personalized recommendations to optimize finances",
     highlight: "24/7 assistance",
   },
   {
-    icon: <Shield className="size-5" />,
+    icon: <ShieldIcon className="size-5" />,
     title: "Bank Security",
     desc: "256-bit encryption and biometric protection",
     highlight: "Military-grade",
   },
   {
-    icon: <Zap className="size-5" />,
+    icon: <ZapIcon className="size-5" />,
     title: "Instant Sync",
     desc: "Connect all accounts in under 2 minutes",
     highlight: "Real-time",
@@ -78,7 +80,7 @@ export function Features() {
           className="text-center mb-20"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
-            <Sparkles className="w-4 h-4 text-primary" />
+            <SparklesIcon className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-primary">
               Powerful Features
             </span>
@@ -148,7 +150,7 @@ function FeatureCard({
       <motion.div
         className={cn(
           "absolute inset-0 rounded-xl bg-gradient-to-br from-primary/10 to-transparent opacity-0",
-          hoveredIndex === index ? "opacity-100" : "group-hover:opacity-50",
+          hoveredIndex === index ? "opacity-100" : "group-hover:opacity-50"
         )}
         transition={{ duration: 0.3 }}
       />
@@ -208,7 +210,7 @@ function FeatureCard({
           className="inline-flex items-center text-sm font-medium text-primary group"
         >
           <span>Learn more</span>
-          <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
+          <ArrowRightIcon className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
         </motion.div>
       </Card>
     </motion.div>

@@ -1,8 +1,8 @@
 "use client";
 
 import Autoplay from "embla-carousel-autoplay";
-import { Quote } from "lucide-react";
 import { useRef } from "react";
+import { QuoteIcon } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
@@ -25,7 +25,7 @@ const testimonials = [
     name: "Michael Chen",
     role: "Software Engineer",
     content:
-      "Finally a finance app that doesn't treat me like an accountant. The AI insights are incredibly helpful.",
+      "Finally a finance app that doesn&apos;t treat me like an accountant. The AI insights are incredibly helpful.",
     stats: "Reduced expenses by 22%",
     avatar: "https://api.dicebear.com/9.x/lorelei/svg?seed=michael",
   },
@@ -86,9 +86,9 @@ export function Testimonials() {
                 className="md:basis-1/2 lg:basis-1/3 px-4"
               >
                 <Card className="p-6 bg-white dark:bg-gray-900/80 backdrop-blur rounded-xl shadow-md h-full flex flex-col justify-between border border-muted">
-                  <Quote className="w-6 h-6 text-primary/30 mb-3" />
+                  <QuoteIcon className="w-6 h-6 text-primary/30 mb-3" />
                   <p className="text-sm text-muted-foreground italic mb-6">
-                    "{t.content}"
+                    &quot;{t.content}&quot;
                   </p>
                   <div className="flex items-center gap-4 mt-auto">
                     <Avatar>

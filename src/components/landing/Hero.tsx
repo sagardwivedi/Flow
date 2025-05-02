@@ -1,8 +1,14 @@
 "use client";
 
+import {
+  ArrowRightIcon,
+  ChevronRightIcon,
+  SparklesIcon,
+  TrendingUpIcon,
+} from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
-import { ArrowRight, ChevronRight, Sparkles, TrendingUp } from "lucide-react";
 import { Button } from "../ui/button";
 
 export function Hero() {
@@ -27,7 +33,7 @@ export function Hero() {
             whileTap={{ scale: 0.98 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 dark:bg-emerald-900/30 rounded-full mb-6 w-fit"
           >
-            <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <TrendingUpIcon className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
               Join 10,000+ savvy savers
             </span>
@@ -53,7 +59,7 @@ export function Hero() {
                 className="flex items-center"
               >
                 Get Started Free
-                <ArrowRight
+                <ArrowRightIcon
                   className="group-hover:translate-x-1 transition-transform"
                   size={18}
                 />
@@ -72,7 +78,7 @@ export function Hero() {
                 className="flex items-center gap-1"
               >
                 See How It Works
-                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ChevronRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </motion.a>
             </Button>
           </div>
@@ -164,7 +170,7 @@ export function Hero() {
                       "w-full rounded-t-sm",
                       i % 2 === 0
                         ? "bg-gradient-to-t from-primary to-emerald-400"
-                        : "bg-gradient-to-t from-secondary to-purple-400",
+                        : "bg-gradient-to-t from-secondary to-purple-400"
                     )}
                   />
                 ))}
@@ -184,7 +190,7 @@ export function Hero() {
               }}
               className="absolute -bottom-5 -right-5 bg-primary rounded-full p-3 shadow-lg border-4 border-white dark:border-gray-900"
             >
-              <Sparkles className="text-white" size={24} />
+              <SparklesIcon className="text-white" size={24} />
             </motion.div>
           </div>
         </motion.div>

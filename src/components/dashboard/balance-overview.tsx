@@ -1,4 +1,3 @@
-import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -7,19 +6,26 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { createClient } from "@/lib/server";
+import { formatCurrency } from "@/lib/utils";
+import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 
-export function BalanceOverview() {
-  // Mock data - would come from API in real implementation
-  const balance = 12450.75;
-  const income = 3200;
-  const expenses = 1850;
-  const savingsPercentage = 22;
+export async function BalanceOverview() {
+  const supabase = await createClient();
+
+  const { data } = await supabase.rpc("get_monthly_summary");
+
+  const summary = data?.[0];
 
   return (
     <Card className="bg-gradient-to-r from-primary/10 via-primary/5 to-background">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Balance Overview</CardTitle>
-        <CardDescription>Your financial summary for April 2025</CardDescription>
+        <CardDescription>
+          Your financial summary for{" "}
+          {new Date().toLocaleString("default", { month: "long" })}{" "}
+          {new Date().getFullYear()}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -28,7 +34,7 @@ export function BalanceOverview() {
               Total Balance
             </h3>
             <p className="text-3xl font-bold">
-              ${balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+              {formatCurrency(summary?.balance || 0)}
             </p>
           </div>
 
@@ -41,7 +47,7 @@ export function BalanceOverview() {
                 <div className="flex items-center">
                   <ArrowUpIcon className="mr-1 h-4 w-4 text-green-500" />
                   <p className="text-xl font-semibold">
-                    ${income.toLocaleString("en-US")}
+                    {formatCurrency(summary?.total_income || 0)}
                   </p>
                 </div>
               </div>
@@ -53,7 +59,7 @@ export function BalanceOverview() {
                 <div className="flex items-center">
                   <ArrowDownIcon className="mr-1 h-4 w-4 text-red-500" />
                   <p className="text-xl font-semibold">
-                    ${expenses.toLocaleString("en-US")}
+                    {formatCurrency(summary?.total_expenses || 0)}
                   </p>
                 </div>
               </div>
@@ -65,11 +71,14 @@ export function BalanceOverview() {
               <h3 className="text-sm font-medium text-muted-foreground">
                 Savings Progress
               </h3>
-              <span className="text-sm font-medium">{savingsPercentage}%</span>
+              <span className="text-sm font-medium">
+                {summary?.savings_percentage}%
+              </span>
             </div>
-            <Progress value={savingsPercentage} className="h-2" />
+            <Progress value={summary?.savings_percentage} className="h-2" />
             <p className="text-sm text-muted-foreground">
-              You&apos;re on track to save {savingsPercentage}% this month!
+              You&apos;re on track to save {summary?.savings_percentage}% this
+              month!
             </p>
           </div>
         </div>

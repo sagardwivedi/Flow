@@ -32,7 +32,7 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   const menuItems = [
-    { name: "Dashboard", href: "/", icon: HomeIcon },
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
     {
       name: "Transactions",
       href: "/transactions",

@@ -1,10 +1,11 @@
 "use client";
 
-import { Download } from "lucide-react";
+import { DownloadIcon } from "lucide-react";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
-import { Button } from "../ui/button";
-import { DateRangePicker } from "../ui/date-range-picker";
+
+import { Button } from "@/components/ui/button";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
 
 export function TransactionTopBar() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -20,7 +21,7 @@ export function TransactionTopBar() {
           <DateRangePicker onChange={setDateRange} value={dateRange} />
         </div>
         <Button variant="outline">
-          <Download className="mr-2 h-4 w-4" />
+          <DownloadIcon className="mr-2 h-4 w-4" />
           Export CSV
         </Button>
       </div>

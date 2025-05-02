@@ -1,6 +1,6 @@
 "use client";
 
-import type { Transactions } from "@/app/protected/transactions/columns";
+import type { Transactions } from "@/app/(protected)/transactions/columns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency } from "@/lib/utils";
@@ -62,7 +62,9 @@ export function TransactionOverview({
           </div>
           <div className="flex items-center text-xs text-muted-foreground mt-1">
             <div
-              className={`flex items-center ${incomeChange >= 0 ? "text-green-500" : "text-red-500"}`}
+              className={`flex items-center ${
+                incomeChange >= 0 ? "text-green-500" : "text-red-500"
+              }`}
             >
               {incomeChange >= 0 ? (
                 <ArrowUpIcon className="mr-1 h-3 w-3" />
@@ -86,7 +88,9 @@ export function TransactionOverview({
           </div>
           <div className="flex items-center text-xs text-muted-foreground mt-1">
             <div
-              className={`flex items-center ${expensesChange <= 0 ? "text-green-500" : "text-red-500"}`}
+              className={`flex items-center ${
+                expensesChange <= 0 ? "text-green-500" : "text-red-500"
+              }`}
             >
               {expensesChange <= 0 ? (
                 <ArrowDownIcon className="mr-1 h-3 w-3" />
@@ -106,13 +110,17 @@ export function TransactionOverview({
         </CardHeader>
         <CardContent>
           <div
-            className={`text-2xl font-bold ${netCashFlow >= 0 ? "text-green-500" : "text-red-500"}`}
+            className={`text-2xl font-bold ${
+              netCashFlow >= 0 ? "text-green-500" : "text-red-500"
+            }`}
           >
             {formatCurrency(netCashFlow)}
           </div>
           <div className="flex items-center text-xs text-muted-foreground mt-1">
             <div
-              className={`flex items-center ${netChange >= 0 ? "text-green-500" : "text-red-500"}`}
+              className={`flex items-center ${
+                netChange >= 0 ? "text-green-500" : "text-red-500"
+              }`}
             >
               {netChange >= 0 ? (
                 <ArrowUpIcon className="mr-1 h-3 w-3" />
