@@ -1,5 +1,9 @@
 "use client";
 
+import { DownloadIcon, FilterIcon } from "lucide-react";
+import { useState } from "react";
+import { DateRange } from "react-day-picker";
+
 import {
   BarChart,
   LineChart,
@@ -15,9 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Download, Filter } from "lucide-react";
-import { useState } from "react";
-import { DateRange } from "react-day-picker";
 
 // Mock data - replace with your actual data fetching
 const reportData = {
@@ -61,7 +62,7 @@ export default function ReportsPage() {
           <div className="flex flex-wrap gap-2 w-full md:w-auto">
             <Select>
               <SelectTrigger className="w-[180px]">
-                <Filter className="mr-2 h-4 w-4" />
+                <FilterIcon className="mr-2 h-4 w-4" />
                 <SelectValue placeholder="Filter by Account" />
               </SelectTrigger>
               <SelectContent>
@@ -72,7 +73,7 @@ export default function ReportsPage() {
               </SelectContent>
             </Select>
             <Button variant="outline">
-              <Download className="mr-2 h-4 w-4" />
+              <DownloadIcon className="mr-2 h-4 w-4" />
               Export
             </Button>
           </div>

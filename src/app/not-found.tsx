@@ -1,22 +1,21 @@
 "use client";
 
-import type React from "react";
-
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import {
-  ArrowLeft,
-  Home,
-  LayoutDashboard,
-  Mail,
+  ArrowLeftIcon,
+  HomeIcon,
+  LayoutDashboardIcon,
+  MailIcon,
   SearchIcon,
-  Settings,
-  User,
+  SettingsIcon,
+  UserIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 export default function NotFound() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -25,16 +24,15 @@ export default function NotFound() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // In a real app, this would go to your search results page
       router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
     }
   };
 
   const popularLinks = [
-    { name: "Home", href: "/", icon: Home },
-    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Profile", href: "/profile", icon: User },
-    { name: "Settings", href: "/settings", icon: Settings },
+    { name: "Icon", href: "/", icon: HomeIcon },
+    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboardIcon },
+    { name: "Profile", href: "/profile", icon: UserIcon },
+    { name: "Settings", href: "/settings", icon: SettingsIcon },
   ];
 
   return (
@@ -102,7 +100,7 @@ export default function NotFound() {
             className="w-full md:w-auto"
             onClick={() => router.back()}
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeftIcon className="mr-2 h-4 w-4" />
             Go back
           </Button>
           <span className="text-muted-foreground hidden md:inline">or</span>
@@ -113,7 +111,7 @@ export default function NotFound() {
             asChild
           >
             <Link href="/contact">
-              <Mail className="mr-2 h-4 w-4" />
+              <MailIcon className="mr-2 h-4 w-4" />
               Contact support
             </Link>
           </Button>

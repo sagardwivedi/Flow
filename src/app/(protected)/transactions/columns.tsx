@@ -1,7 +1,12 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { Eye, MoreVertical, Pencil, Trash2 } from "lucide-react";
+import {
+  EyeIcon,
+  MoreVerticalIcon,
+  PencilIcon,
+  Trash2Icon,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -107,7 +112,7 @@ export const columns: ColumnDef<Transactions>[] = [
         <div
           className={cn(
             "font-medium",
-            amount > 0 ? "text-green-500" : "text-red-500",
+            amount > 0 ? "text-green-500" : "text-red-500"
           )}
         >
           {formatCurrency(amount)}
@@ -125,21 +130,21 @@ export const columns: ColumnDef<Transactions>[] = [
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
-              <MoreVertical className="size-4" />
+              <MoreVerticalIcon className="size-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[160px]">
             <DropdownMenuItem>
-              <Eye className="mr-2 h-4 w-4" />
+              <EyeIcon className="mr-2 h-4 w-4" />
               View Details
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Pencil className="mr-2 h-4 w-4" />
+              <PencilIcon className="mr-2 h-4 w-4" />
               Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-red-500">
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2Icon className="mr-2 h-4 w-4" />
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

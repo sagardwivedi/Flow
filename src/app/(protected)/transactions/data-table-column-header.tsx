@@ -1,3 +1,11 @@
+import type { Column } from "@tanstack/react-table";
+import {
+  ArrowDownIcon,
+  ArrowUpDownIcon,
+  ArrowUpIcon,
+  EyeOffIcon,
+} from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -6,8 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { Column } from "@tanstack/react-table";
-import { ArrowDown, ArrowUp, ArrowUpDown, EyeOff } from "lucide-react";
 
 interface DataTableColumnHeaderProps<TData, TValue> {
   column: Column<TData, TValue>;
@@ -39,26 +45,26 @@ export function DataTableColumnHeader<TData, TValue>({
               {title}
             </span>
             {column.getIsSorted() === "desc" ? (
-              <ArrowDown className="ml-2 h-4 w-4" />
+              <ArrowDownIcon className="ml-2 h-4 w-4" />
             ) : column.getIsSorted() === "asc" ? (
-              <ArrowUp className="ml-2 h-4 w-4" />
+              <ArrowUpIcon className="ml-2 h-4 w-4" />
             ) : (
-              <ArrowUpDown className="ml-2 h-4 w-4" />
+              <ArrowUpDownIcon className="ml-2 h-4 w-4" />
             )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <ArrowUp className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+            <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             Asc
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDown className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+            <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-            <EyeOff className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+            <EyeOffIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             Hide
           </DropdownMenuItem>
         </DropdownMenuContent>
