@@ -60,7 +60,7 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
                   <Link href="/auth/login">Sign In</Link>
                 </Button>
                 <Button asChild size="sm">
-                  <Link href="/auth/signup">Sign Up</Link>
+                  <Link href="/auth/sign-up">Sign Up</Link>
                 </Button>
               </>
             )}
