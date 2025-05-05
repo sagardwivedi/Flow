@@ -41,14 +41,14 @@ export async function SavingsGoals() {
                 percentage >= 100
                   ? "Complete"
                   : percentage >= 70
-                  ? "On Track"
-                  : "Behind";
+                    ? "On Track"
+                    : "Behind";
               const badgeVariant =
                 status === "Complete"
                   ? "default"
                   : status === "On Track"
-                  ? "outline"
-                  : "secondary";
+                    ? "outline"
+                    : "secondary";
 
               return (
                 <div

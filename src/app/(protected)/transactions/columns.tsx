@@ -112,7 +112,7 @@ export const columns: ColumnDef<Transactions>[] = [
         <div
           className={cn(
             "font-medium",
-            amount > 0 ? "text-green-500" : "text-red-500"
+            amount > 0 ? "text-green-500" : "text-red-500",
           )}
         >
           {formatCurrency(amount)}

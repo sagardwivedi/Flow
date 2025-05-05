@@ -13,7 +13,7 @@ export default function ProtectedLayout({
     <SidebarProvider>
       <AppSidebar />
       <NuqsAdapter>
-        <SidebarInset>{children}</SidebarInset>
+        <SidebarInset vaul-drawer-wrapper="">{children}</SidebarInset>
         <Suspense>
           <GoalCreateDialog />
         </Suspense>

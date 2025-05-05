@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { ReactNode } from "react";
-import { LogoutButton } from "../logout-button";
+import { LogoutButton } from "../auth/logout-button";
 import { ThemeToggle } from "../theme-toggle";
 
 export function TopBar() {
