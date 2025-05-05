@@ -10,8 +10,8 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { createClient } from "@/lib/server";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export async function SavingsGoals() {
   const supabase = await createClient();

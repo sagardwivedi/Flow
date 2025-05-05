@@ -19,7 +19,7 @@ import {
 import { useState } from "react";
 
 import { cn } from "@/lib/utils";
-import { Card } from "../ui/card";
+import { Card } from "@/components/ui/card";
 
 const features = [
   {

@@ -6,10 +6,11 @@ import {
   SparklesIcon,
   TrendingUpIcon,
 } from "lucide-react";
-
-import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
-import { Button } from "../ui/button";
+import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export function Hero() {
   return (
@@ -53,17 +54,13 @@ export function Hero() {
 
           <div className="flex flex-wrap gap-4 mt-8">
             <Button size="lg" className="gap-2 group" asChild>
-              <motion.a
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center"
-              >
+              <Link href="/auth/login" className="flex items-center">
                 Get Started Free
                 <ArrowRightIcon
                   className="group-hover:translate-x-1 transition-transform"
                   size={18}
                 />
-              </motion.a>
+              </Link>
             </Button>
 
             <Button
@@ -72,14 +69,13 @@ export function Hero() {
               className="group border-2"
               asChild
             >
-              <motion.a
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-1"
-              >
+              <Link href="/auth/sign-up" className="flex items-center gap-1">
                 See How It Works
-                <ChevronRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </motion.a>
+                <ChevronRightIcon
+                  size={18}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
+              </Link>
             </Button>
           </div>
 
@@ -170,7 +166,7 @@ export function Hero() {
                       "w-full rounded-t-sm",
                       i % 2 === 0
                         ? "bg-gradient-to-t from-primary to-emerald-400"
-                        : "bg-gradient-to-t from-secondary to-purple-400",
+                        : "bg-gradient-to-t from-secondary to-purple-400"
                     )}
                   />
                 ))}
