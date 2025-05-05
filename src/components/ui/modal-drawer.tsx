@@ -92,7 +92,7 @@ const ModalDrawer = ({
 
 function createResponsiveComponent<
   TDesktop extends ElementType,
-  TMobile extends ElementType
+  TMobile extends ElementType,
 >(DesktopComponent: TDesktop, MobileComponent: TMobile) {
   type DesktopProps = ComponentPropsWithoutRef<TDesktop>;
   type MobileProps = ComponentPropsWithoutRef<TMobile>;
@@ -115,18 +115,18 @@ function createResponsiveComponent<
 
 const ModalDrawerTrigger = createResponsiveComponent(
   DialogTrigger,
-  DrawerTrigger
+  DrawerTrigger,
 );
 const ModalDrawerClose = createResponsiveComponent(DialogClose, DrawerClose);
 const ModalDrawerContent = createResponsiveComponent(
   DialogContent,
-  DrawerContent
+  DrawerContent,
 );
 const ModalDrawerHeader = createResponsiveComponent(DialogHeader, DrawerHeader);
 const ModalDrawerTitle = createResponsiveComponent(DialogTitle, DrawerTitle);
 const ModalDrawerDescription = createResponsiveComponent(
   DialogDescription,
-  DrawerDescription
+  DrawerDescription,
 );
 const ModalDrawerFooter = createResponsiveComponent(DialogFooter, DrawerFooter);
 
