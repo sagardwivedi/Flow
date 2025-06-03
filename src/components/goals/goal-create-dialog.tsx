@@ -25,27 +25,50 @@ import {
 } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { type } from "arktype";
 
-// Schema
-const formSchema = z.object({
-  name: z.string().min(2, "Give your goal a name"),
-  category: z.string().min(1, "Select a category"),
-  targetAmount: z.number().min(1, "Amount must be positive"),
-  icon: z.string().optional(),
-  startDate: z.date(),
-  endDate: z.date().optional(),
-  autoSave: z.boolean().default(false),
-  saveFrequency: z.string().optional(),
-  motivation: z.string().optional(),
-  reminders: z.boolean().default(false),
+// ArkType Schema
+const formSchema = type({
+  name: "string>1", // String with minimum length of 2
+  category: "string>0", // String with minimum length of 1
+  targetAmount: "number>0", // Positive number
+  icon: "string?", // Optional string
+  startDate: "Date",
+  endDate: "Date?", // Optional date
+  autoSave: "boolean = false", // Boolean with default false
+  saveFrequency: "string?", // Optional string
+  motivation: "string?", // Optional string
+  reminders: "boolean = false", // Boolean with default false
 });
+
+// Type inference from ArkType schema
+type FormData = typeof formSchema.infer;
+
+// Custom validation function for ArkType integration
+function validateWithArkType(data: any) {
+  const result = formSchema(data);
+
+  if (result instanceof type.errors) {
+    // Convert ArkType errors to react-hook-form format
+    const errors: Record<string, { message: string }> = {};
+
+    result.forEach((error) => {
+      const path = error.path?.join(".") || "root";
+      errors[path] = {
+        message: error.message || `Invalid value at ${path}`,
+      };
+    });
+
+    return { errors };
+  }
+
+  return { data: result };
+}
 
 export function GoalCreateDialog() {
   const [dialogOpen, setDialogOpen] = useQueryState<boolean>("goalDialog", {
@@ -60,8 +83,7 @@ export function GoalCreateDialog() {
     serialize: (v) => v.toString(),
   });
 
-  const form = useForm({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormData>({
     defaultValues: {
       name: "",
       category: "",
@@ -74,6 +96,7 @@ export function GoalCreateDialog() {
       saveFrequency: "",
       motivation: "",
     },
+    mode: "onChange",
   });
 
   useEffect(() => {
@@ -85,13 +108,60 @@ export function GoalCreateDialog() {
 
   const startDate = form.watch("startDate");
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: FormData) {
+    // Validate with ArkType
+    const validation = validateWithArkType(values);
+
+    if (validation.errors) {
+      // Set form errors
+      Object.entries(validation.errors).forEach(([field, error]) => {
+        form.setError(field as keyof FormData, error);
+      });
+      return;
+    }
+
+    console.log(validation.data);
     await setDialogOpen(false);
     // Submit logic here
   }
 
   async function handleStepChange(newStep: number) {
+    // Validate current step before proceeding
+    if (newStep > step) {
+      let fieldsToValidate: (keyof FormData)[] = [];
+
+      if (step === 1) {
+        fieldsToValidate = ["name", "category"];
+      } else if (step === 2) {
+        fieldsToValidate = ["startDate"];
+      }
+
+      // Trigger validation for current step fields
+      const isValid = await form.trigger(fieldsToValidate);
+      if (!isValid) return;
+
+      // Additional ArkType validation for step 1
+      if (step === 1) {
+        const stepData = {
+          name: form.getValues("name"),
+          category: form.getValues("category"),
+        };
+
+        const nameResult = type("string>1")(stepData.name);
+        const categoryResult = type("string>0")(stepData.category);
+
+        if (nameResult instanceof type.errors) {
+          form.setError("name", { message: "Give your goal a name" });
+          return;
+        }
+
+        if (categoryResult instanceof type.errors) {
+          form.setError("category", { message: "Select a category" });
+          return;
+        }
+      }
+    }
+
     await setStep(newStep);
   }
 
@@ -107,7 +177,7 @@ export function GoalCreateDialog() {
                     "flex items-center justify-center w-8 h-8 rounded-full",
                     step >= i + 1
                       ? "bg-primary text-primary-foreground"
-                      : "bg-muted",
+                      : "bg-muted"
                   )}
                 >
                   {i + 1}
@@ -115,9 +185,7 @@ export function GoalCreateDialog() {
                 {i < 2 && (
                   <span
                     className={cn(
-                      step > i + 1
-                        ? "text-foreground"
-                        : "text-muted-foreground",
+                      step > i + 1 ? "text-foreground" : "text-muted-foreground"
                     )}
                   >
                     →
@@ -168,6 +236,27 @@ export function GoalCreateDialog() {
                   )}
                 />
 
+                <FormField
+                  control={form.control}
+                  name="targetAmount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Target Amount</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="1000"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <div className="flex justify-end">
                   <Button type="button" onClick={() => handleStepChange(2)}>
                     Next: Plan Timeline
@@ -193,7 +282,7 @@ export function GoalCreateDialog() {
                                 variant="outline"
                                 className={cn(
                                   "w-full pl-3 text-left font-normal",
-                                  !field.value && "text-muted-foreground",
+                                  !field.value && "text-muted-foreground"
                                 )}
                               >
                                 {field.value
@@ -231,7 +320,7 @@ export function GoalCreateDialog() {
                                 variant="outline"
                                 className={cn(
                                   "w-full pl-3 text-left font-normal",
-                                  !field.value && "text-muted-foreground",
+                                  !field.value && "text-muted-foreground"
                                 )}
                               >
                                 {field.value
@@ -284,6 +373,27 @@ export function GoalCreateDialog() {
                         <FormLabel className="text-base">Auto-Save</FormLabel>
                         <FormDescription>
                           Automatically transfer funds to this goal
+                        </FormDescription>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="reminders"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                      <div className="space-y-0.5">
+                        <FormLabel className="text-base">Reminders</FormLabel>
+                        <FormDescription>
+                          Get notified about your goal progress
                         </FormDescription>
                       </div>
                       <FormControl>

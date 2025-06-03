@@ -105,7 +105,7 @@ function createResponsiveComponent<
     const { isDesktop } = useModalDrawerContext();
     const Component = isDesktop ? DesktopComponent : MobileComponent;
 
-    return <Component {...(props as any)} />;
+    return <Component {...(props)} />;
   };
 }
 

@@ -58,9 +58,11 @@ export function LoginForm({
 
     if (error) {
       toast.error(error.message);
+      return;
     }
-    router.push("/protected");
+
     toast.success("Login Successful");
+    router.replace("/dashboard");
   };
 
   return (

@@ -1,8 +1,7 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { arktypeResolver } from "@hookform/resolvers/arktype";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -38,33 +37,62 @@ import { CalendarIcon, PlusIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { type } from "arktype";
+import { toast } from "sonner";
 
-const formSchema = z.object({
-  name: z.string().min(2, "Bill name is required"),
-  amount: z.number().min(0.01, "Amount must be positive"),
-  dueDate: z.date(),
-  frequency: z.enum(["Monthly", "Quarterly", "Annually", "One-time"]),
-  category: z.string(),
-  account: z.string().optional(),
-  reminder: z.boolean().default(false),
-  notes: z.string().optional(),
+const formSchema = type({
+  name: "string >= 2",
+  amount: "number > 0",
+  dueDate: "Date",
+  frequency: "'Monthly' | 'Quarterly' | 'Annually' | 'One-time'",
+  category: "string > 0",
+  "account?": "string",
+  reminder: "boolean = false",
+  "notes?": "string",
+}).narrow((data, ctx) => {
+  if (data.name.trim().length < 2) {
+    return ctx.reject({
+      expected: "at least 2 characters",
+      actual: data.name,
+      path: ["name"],
+    });
+  }
+  if (data.amount <= 0) {
+    return ctx.reject({
+      expected: "a positive amount",
+      actual: data.amount.toString(),
+      path: ["amount"],
+    });
+  }
+  return true;
 });
 
+type BillFormData = typeof formSchema.infer;
+
 export function AddBillDialog() {
-  const form = useForm({
-    resolver: zodResolver(formSchema),
+  const form = useForm<BillFormData>({
+    resolver: arktypeResolver(formSchema),
     defaultValues: {
       name: "",
       amount: 0,
       dueDate: new Date(),
       frequency: "Monthly",
+      category: "",
+      account: "",
       reminder: false,
+      notes: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // Add your bill creation logic here
+  function onSubmit(values: BillFormData) {
+    try {
+      console.log("Bill data:", values);
+      // Add your bill creation logic here
+      toast.success("Bill added successfully!");
+      form.reset();
+    } catch (error) {
+      toast.error("Failed to add bill. Please try again.");
+    }
   }
 
   return (
@@ -75,7 +103,7 @@ export function AddBillDialog() {
           Add New Bill
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add New Bill</DialogTitle>
         </DialogHeader>
@@ -104,15 +132,19 @@ export function AddBillDialog() {
                 name="amount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Amount</FormLabel>
+                    <FormLabel>Amount ($)</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
+                        step="0.01"
+                        min="0.01"
                         placeholder="0.00"
                         {...field}
-                        onChange={(e) =>
-                          field.onChange(parseFloat(e.target.value))
-                        }
+                        value={field.value || ""}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          field.onChange(value === "" ? 0 : parseFloat(value));
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -164,10 +196,7 @@ export function AddBillDialog() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Frequency</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select frequency" />
@@ -191,10 +220,7 @@ export function AddBillDialog() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select category" />
@@ -210,6 +236,9 @@ export function AddBillDialog() {
                         </SelectItem>
                         <SelectItem value="Insurance">Insurance</SelectItem>
                         <SelectItem value="Loan">Loan</SelectItem>
+                        <SelectItem value="Subscriptions">
+                          Subscriptions
+                        </SelectItem>
                         <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
@@ -218,6 +247,33 @@ export function AddBillDialog() {
                 )}
               />
             </div>
+
+            <FormField
+              control={form.control}
+              name="account"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Account (Optional)</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value || ""}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select account" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="checking">Checking Account</SelectItem>
+                      <SelectItem value="savings">Savings Account</SelectItem>
+                      <SelectItem value="credit">Credit Card</SelectItem>
+                      <SelectItem value="business">Business Account</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
@@ -253,6 +309,7 @@ export function AddBillDialog() {
                       placeholder="Any additional details..."
                       className="resize-none"
                       {...field}
+                      value={field.value || ""}
                     />
                   </FormControl>
                   <FormMessage />
@@ -260,9 +317,23 @@ export function AddBillDialog() {
               )}
             />
 
-            <Button type="submit" className="w-full">
-              Save Bill
-            </Button>
+            <div className="flex gap-2 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => form.reset()}
+                className="flex-1"
+              >
+                Reset
+              </Button>
+              <Button
+                type="submit"
+                className="flex-1"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? "Saving..." : "Save Bill"}
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>
